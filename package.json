@@ -1,0 +1,17 @@
+{
+  "name": "browser-extensions-monorepo",
+  "private": true,
+  "workspaces": [
+    "extensions/**/ext-*",
+    "shared/*",
+    "tools/*"
+  ],
+  "scripts": {
+    "build": "echo Building all extensions",
+    "dev": "echo Starting dev mode"
+  },
+  "devDependencies": {
+    "eslint": "^8.0.0",
+    "concurrently": "^8.0.0"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "smartbrowse-for-marketplace",
+  "description": "Improve the experience of browsing and searching FB Marketplace",
+  "author": "Matt Webber",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "echo Building SmartBrowse Extension",
+    "dev": "echo Starting Dev Server"
+  }
+}
