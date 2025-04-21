@@ -1,0 +1,36 @@
+{
+    "manifest_version": 3,
+    "name": "SmartBrowse for Marketplace",
+    "description": "Improve the experience of browsing and searching FB Marketplace",
+    "author": "Matt Webber",
+    "version": "1.0",
+    "permissions": [
+        "storage",
+        "scripting",
+        "activeTab"
+    ],
+    "host_permissions": [
+        "*://*.facebook.com/marketplace/*"
+    ],
+    "background": {
+        "service_worker": "src/service-worker.js"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "*://*.facebook.com/marketplace/*"
+            ],
+            "js": [
+                "src/script.js"
+            ],
+            "run_at": "document_end"
+        }
+    ],
+    "action": {
+        "default_popup": "src/popup.html",
+        "default_icon": {
+            "48": "assets/icon48.png"
+        }
+    },
+    "options_page": "src/options.html"
+}
