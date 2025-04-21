@@ -1,8 +1,4 @@
-// Inject element picker library
-const script = document.createElement('script');
-script.src = 'https://cdn.jsdelivr.net/npm/html-element-picker@latest';
-
-document.head.appendChild(script);
+import ElementPicker from 'html-element-picker';
 
 let elementPicker = null;
 let currentAction = 'highlight';
@@ -70,6 +66,7 @@ const startElementPicker = () => {
 // Message listener for popup
 chrome.runtime.onMessage.addListener((msg) => {
   if (msg.action === 'startSelection') {
+    console.log('Starting element selection');
     currentAction = msg.actionType;
     startElementPicker();
   }

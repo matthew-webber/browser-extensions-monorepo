@@ -23,7 +23,8 @@
             "js": [
                 "src/script.js"
             ],
-            "run_at": "document_end"
+            "run_at": "document_end",
+            "type": "module"
         }
     ],
     "action": {
