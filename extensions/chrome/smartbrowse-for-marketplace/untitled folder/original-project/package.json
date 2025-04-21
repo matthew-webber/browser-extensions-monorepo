@@ -1,0 +1,16 @@
+{
+  "name": "smartbrowse-for-marketplace",
+  "description": "Improve the experience of browsing and searching FB Marketplace",
+  "author": "Matt Webber",
+  "license": "MIT",
+  "type": "module",
+  "version": "1.0.0",
+  "main": "src/script.js",
+  "scripts": {
+    "build": "echo Building SmartBrowse Extension",
+    "dev": "echo Starting Dev Server"
+  },
+  "dependencies": {
+    "html-element-picker": "^1.1.2"
+  }
+}
