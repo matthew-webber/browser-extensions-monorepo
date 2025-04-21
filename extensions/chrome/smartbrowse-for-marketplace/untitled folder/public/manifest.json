@@ -28,10 +28,7 @@
         }
     ],
     "action": {
-        "default_popup": "src/popup.html",
-        "default_icon": {
-            "48": "assets/icon48.png"
-        }
+        "default_popup": "src/popup.html"
     },
     "options_page": "src/options.html"
 }

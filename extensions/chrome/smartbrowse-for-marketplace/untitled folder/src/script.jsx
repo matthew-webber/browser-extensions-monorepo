@@ -1,4 +1,5 @@
 import ElementPicker from 'html-element-picker';
+console.log('asdf Content script loaded');
 
 let elementPicker = null;
 let currentAction = 'highlight';
@@ -66,7 +67,7 @@ const startElementPicker = () => {
 // Message listener for popup
 chrome.runtime.onMessage.addListener((msg) => {
   if (msg.action === 'startSelection') {
-    console.log('Starting element selection');
+    console.log('asdf Starting element selection');
     currentAction = msg.actionType;
     startElementPicker();
   }
