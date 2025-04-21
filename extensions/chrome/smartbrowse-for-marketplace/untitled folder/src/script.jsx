@@ -40,11 +40,13 @@ const applyPreferences = async () => {
 
 // Initialize element picker with user action
 const startElementPicker = () => {
+  console.log('asdf Starting element picker');
   elementPicker = new ElementPicker({
     background: 'rgba(255, 0, 0, 0.3)',
     action: {
       trigger: 'click',
-      callback: function (target) {
+      // prettier-ignore
+      callback: (function (target) {
         const selector = getSelector(target);
         chrome.storage.sync.get('preferences', ({ preferences = [] }) => {
           chrome.storage.sync.set({
@@ -58,8 +60,7 @@ const startElementPicker = () => {
             ],
           });
         });
-        elementPicker.destroy();
-      },
+      }),
     },
   });
 };

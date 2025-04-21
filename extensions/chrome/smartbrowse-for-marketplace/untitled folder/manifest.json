@@ -7,13 +7,14 @@
     "permissions": [
         "storage",
         "scripting",
-        "activeTab"
+        "activeTab",
+        "tabs"
     ],
     "host_permissions": [
         "*://*.facebook.com/marketplace/*"
     ],
     "background": {
-        "service_worker": "src/service-worker.js"
+        "service_worker": "src/service-worker.jsx"
     },
     "content_scripts": [
         {
@@ -21,7 +22,7 @@
                 "*://*.facebook.com/marketplace/*"
             ],
             "js": [
-                "src/script.js"
+                "src/script.jsx"
             ],
             "run_at": "document_end",
             "type": "module"
