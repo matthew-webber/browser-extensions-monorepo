@@ -8,10 +8,17 @@ let escListener = null;
 
 // Utility to stop selection mode
 const stopElementPicker = () => {
+  // Remove link-disabling CSS
+  const disableLinksStyle = document.getElementById(
+    'smartbrowse-disable-links'
+  );
+  if (disableLinksStyle) {
+    disableLinksStyle.remove();
+  }
   console.log('Stopping element picker');
   document.removeEventListener('mousemove', elementPicker._detectMouseMove);
 
-  // 2. detach trigger listener (e.g. click)
+  // 2. detach trigger listener (e.g. mousedown)
   document.removeEventListener(
     elementPicker.action.trigger,
     elementPicker._triggerListener
@@ -23,7 +30,7 @@ const stopElementPicker = () => {
   elementPicker = null;
   selectionActive = false;
   if (clickInterceptor) {
-    document.removeEventListener('click', clickInterceptor, true);
+    document.removeEventListener('mousedown', clickInterceptor, true);
     clickInterceptor = null;
   }
   if (escListener) {
@@ -54,13 +61,14 @@ new MutationObserver(applyPreferences).observe(document.body, {
 
 // Start selection mode
 const startElementPicker = () => {
+  console.log('BOOP BOOP BOOP');
   selectionActive = true;
-  // Prevent normal link clicks
-  clickInterceptor = (e) => {
-    // e.preventDefault();
-    // e.stopPropagation();
-  };
-  document.addEventListener('click', clickInterceptor, true);
+  // Disable Marketplace link clicks via CSS pointer-events
+  const disableLinksStyle = document.createElement('style');
+  disableLinksStyle.id = 'smartbrowse-disable-links';
+  disableLinksStyle.textContent =
+    'a[href*="/item/"] { pointer-events: none !important; }';
+  document.head.appendChild(disableLinksStyle);
 
   // Allow Esc to cancel
   escListener = (e) => {
@@ -71,11 +79,11 @@ const startElementPicker = () => {
   elementPicker = new ElementPicker({
     background: 'rgba(255, 0, 0, 0.3)',
     action: {
-      trigger: 'click',
+      trigger: 'mousedown',
       callback: (target) => {
         console.log('Element clicked:', target);
         // Show custom action selection popup
-        const { top, left, width, height } = target.getBoundingClientRect();
+        const { top, left, height } = target.getBoundingClientRect();
         const popup = document.createElement('div');
         popup.style.position = 'absolute';
         popup.style.top = `${top + window.scrollY + height + 8}px`;
