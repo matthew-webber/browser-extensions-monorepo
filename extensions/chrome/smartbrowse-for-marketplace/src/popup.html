@@ -3,22 +3,13 @@
   <head>
     <style>
       body {
-        width: 200px;
-        padding: 10px;
-      }
-      button {
-        width: 100%;
-        margin: 5px 0;
+        margin: 0;
+        font-family: Arial, sans-serif;
       }
     </style>
   </head>
   <body>
-    <select id="actionType">
-      <option value="highlight">Highlight</option>
-      <option value="hide">Hide</option>
-    </select>
-    <button id="startSelection">Start Element Selection</button>
-    <button id="openOptions">Options</button>
-    <script src="popup.js"></script>
+    <div id="root"></div>
+    <script type="module" src="/src/popup.jsx"></script>
   </body>
 </html>

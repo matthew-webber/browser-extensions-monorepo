@@ -6,10 +6,17 @@ A Chrome extension that enables patient Facebook Marketplace users to customize 
 
 ## Wants/Needs:
 
-- Store user preferences across sessions with chrome.storage.sync.
-- Allow users to click-select page elements and derive a unique CSS selector or use listing URL as identifier.
+- The extension should allow users to select elements on the page and apply actions to them.
+- Users should be able to specify actions such as hiding or highlighting elements based on text or element matches.
+- Allow users to click-select page elements which will then be passed to the extension for further processing and classification.
+- When an element is clicked/selected, the extension should further prompt the user to classify the element (e.g., "hide", "highlight", or "blur").
+    - Note: since the extension will be used on Facebook Marketplace, and the cards which will be clicked act as links, the extension should prevent this from happening while the user is selecting elements.
+- The extension should be able to store the selected element's item number (found in the `href` attribute -- e.g. `href="/marketplace/item/630345633312939/..."`, retrieving `630345633312939`) and the action taken (e.g., "hide", "highlight", or "blur") in `chrome.storage.local`.
+- The extension should cancel the selection process if the user clicks outside the selected element, if they end the selection process by clicking the button from the popup window again, or if the user presses the "Esc" key.
+- The extension should be able to retrieve the stored elements and actions from `chrome.storage.local` and apply them to the page when it loads.
+- The extension should be able to listen for changes in the DOM (e.g., new listings being added) and apply the stored actions to the new elements.
+- The extension should be able to inject CSS styles into the page to highlight or hide elements.
 - Follow modern JavaScript practices (const/let, arrow functions, querySelector).
-- Implement UI interactions in the popup or options page for configuring actions.
 
 ## Context:
 
