@@ -82,31 +82,41 @@ const startElementPicker = () => {
       trigger: 'mousedown',
       callback: (target) => {
         console.log('Element clicked:', target);
-        // Show custom action selection popup
-        const { top, left, height } = target.getBoundingClientRect();
-        const popup = document.createElement('div');
-        popup.style.position = 'absolute';
-        popup.style.top = `${top + window.scrollY + height + 8}px`;
-        popup.style.left = `${left + window.scrollX}px`;
-        popup.style.background = '#fff';
-        popup.style.border = '1px solid #ccc';
-        popup.style.padding = '8px';
-        popup.style.boxShadow = '0 2px 6px rgba(0,0,0,0.2)';
-        popup.style.zIndex = '100000';
+        // Create translucent overlay over the clicked card
+        const { top, left, width, height } = target.getBoundingClientRect();
+        const overlay = document.createElement('div');
+        overlay.style.position = 'absolute';
+        overlay.style.top = `${top + window.scrollY}px`;
+        overlay.style.left = `${left + window.scrollX}px`;
+        overlay.style.width = `${width}px`;
+        overlay.style.height = `${height}px`;
+        overlay.style.background = 'rgba(0, 0, 0, 0.5)';
+        overlay.style.display = 'flex';
+        overlay.style.alignItems = 'center';
+        overlay.style.justifyContent = 'center';
+        overlay.style.zIndex = '100000';
+
+        // Container for buttons
+        const container = document.createElement('div');
+        container.style.background = '#fff';
+        container.style.padding = '8px';
+        container.style.borderRadius = '4px';
+        container.style.display = 'flex';
+        container.style.gap = '8px';
+
         ['hide', 'highlight', 'blur'].forEach((act) => {
           const btn = document.createElement('button');
           btn.textContent = act;
-          btn.style.margin = '0 4px';
           btn.addEventListener('click', () => {
             const action = act;
-            // Try to extract Marketplace itemId from nearest <a>
+            // Extract itemId from nearest link
             let itemId = null;
-            const link = target.closest('a');
+            const link = target.querySelector('a');
             if (link && link.href) {
               const match = link.href.match(/\/item\/(\d+)\//);
               if (match) itemId = match[1];
             }
-            // Store in local storage
+            // Store preference
             chrome.storage.local.get({ preferences: [] }, ({ preferences }) => {
               chrome.storage.local.set({
                 preferences: [
@@ -116,12 +126,14 @@ const startElementPicker = () => {
               });
             });
             // Cleanup
-            popup.remove();
-            stopElementPicker();
+            overlay.remove();
           });
-          popup.appendChild(btn);
+          container.appendChild(btn);
         });
-        document.body.appendChild(popup);
+
+        overlay.appendChild(container);
+        document.body.appendChild(overlay);
+        stopElementPicker();
       },
     },
   });
