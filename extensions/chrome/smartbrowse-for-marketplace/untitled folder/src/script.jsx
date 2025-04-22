@@ -74,33 +74,46 @@ const startElementPicker = () => {
       trigger: 'click',
       callback: (target) => {
         console.log('Element clicked:', target);
-        // Prompt user for the desired action
-        const action = window.prompt(
-          'Enter action to apply (hide, highlight, blur):',
-          'hide'
-        );
-        if (!action || !['hide', 'highlight', 'blur'].includes(action)) {
-          alert('Invalid action—selection canceled.');
-          stopElementPicker();
-          return;
-        }
-        // Try to extract Marketplace itemId from nearest <a>
-        let itemId = null;
-        const link = target.closest('a');
-        if (link && link.href) {
-          const match = link.href.match(/\/item\/(\d+)\//);
-          if (match) itemId = match[1];
-        }
-        // Store in local storage
-        chrome.storage.local.get({ preferences: [] }, ({ preferences }) => {
-          chrome.storage.local.set({
-            preferences: [
-              ...preferences,
-              { itemId, action, timestamp: Date.now() },
-            ],
+        // Show custom action selection popup
+        const { top, left, width, height } = target.getBoundingClientRect();
+        const popup = document.createElement('div');
+        popup.style.position = 'absolute';
+        popup.style.top = `${top + window.scrollY + height + 8}px`;
+        popup.style.left = `${left + window.scrollX}px`;
+        popup.style.background = '#fff';
+        popup.style.border = '1px solid #ccc';
+        popup.style.padding = '8px';
+        popup.style.boxShadow = '0 2px 6px rgba(0,0,0,0.2)';
+        popup.style.zIndex = '100000';
+        ['hide', 'highlight', 'blur'].forEach((act) => {
+          const btn = document.createElement('button');
+          btn.textContent = act;
+          btn.style.margin = '0 4px';
+          btn.addEventListener('click', () => {
+            const action = act;
+            // Try to extract Marketplace itemId from nearest <a>
+            let itemId = null;
+            const link = target.closest('a');
+            if (link && link.href) {
+              const match = link.href.match(/\/item\/(\d+)\//);
+              if (match) itemId = match[1];
+            }
+            // Store in local storage
+            chrome.storage.local.get({ preferences: [] }, ({ preferences }) => {
+              chrome.storage.local.set({
+                preferences: [
+                  ...preferences,
+                  { itemId, action, timestamp: Date.now() },
+                ],
+              });
+            });
+            // Cleanup
+            popup.remove();
+            stopElementPicker();
           });
+          popup.appendChild(btn);
         });
-        stopElementPicker();
+        document.body.appendChild(popup);
       },
     },
   });
