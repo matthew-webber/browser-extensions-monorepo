@@ -42,7 +42,10 @@ const stopElementPicker = () => {
 
 // Apply stored preferences on load and on DOM mutations
 const applyPreferences = async () => {
-  const { preferences = [] } = await chrome.storage.local.get('preferences');
+  const { preferences = [], effectsEnabled = true } =
+    await chrome.storage.local.get(['preferences', 'effectsEnabled']);
+  if (!effectsEnabled) return;
+
   preferences.forEach((pref) => {
     document
       .querySelectorAll(`a[href*="/item/${pref.itemId}/"]`)
@@ -53,7 +56,18 @@ const applyPreferences = async () => {
       });
   });
 };
-applyPreferences();
+
+chrome.storage.onChanged.addListener((changes) => {
+  if (changes.effectsEnabled) {
+    if (changes.effectsEnabled.newValue) {
+      applyPreferences();
+    } else {
+      // simplest way to clear all injected styles is reload
+      window.location.reload();
+    }
+  }
+});
+
 new MutationObserver(applyPreferences).observe(document.body, {
   subtree: true,
   childList: true,

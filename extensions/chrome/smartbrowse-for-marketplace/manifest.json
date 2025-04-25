@@ -2,7 +2,6 @@
     "manifest_version": 3,
     "name": "SmartBrowse for Marketplace",
     "description": "Improve the experience of browsing and searching FB Marketplace",
-    "author": "Matt Webber",
     "version": "1.0",
     "permissions": [
         "storage",
